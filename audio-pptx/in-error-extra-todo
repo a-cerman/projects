@@ -1,0 +1,34 @@
+Bu hata, uygulamanın pencere açmak için kullandığı Tcl/Tk dosyalarını bulamadığını gösteriyor.
+Önce uygulama klasöründeki PowerShell penceresinde şu komutu çalıştır:
+
+```powershell
+py -3.13 -m tkinter
+```
+
+Küçük bir test penceresi açılmaz ve aynı hata çıkarsa Python kurulumunu onar:
+1. Windows’ta Settings → Apps → Installed apps bölümünü aç.
+2. Python 3.13.0 için Modify seçeneğini seç.
+3. Kurulum ekranında tekrar Modify seçeneğine gir.
+4. “tcl/tk and IDLE” kutusunu işaretleyip kurulumu tamamla. Zaten işaretliyse Repair seçeneğini kullan.
+Sonra tekrar dene:
+
+```powershell
+py -3.13 -m tkinter
+```
+
+Test penceresi açılırsa Pencereyi QUIT ile kapat.Test penceresi açılmış; Tcl/Tk normal Python kurulumunda çalışıyor. Şimdi uygulamanın sanal ortamını kontrol edelim.
+ Uygulama klasöründeki PowerShell’de şu komutu çalıştır:
+
+ .\.venv\Scripts\python.exe -m tkinter
+
+ Yine aynı test penceresi açılırsa Baslat.cmd dosyasını yeniden çalıştır.
+Hata çıkarsa hata metnini buraya kopyala; sorun sanal ortamın Tcl/Tk dosyalarını bulmasında demektir.
+Model indirilmiş; yeniden indirmen gerekmiyor. Ana Python’da çalışan Tcl/Tk dosyalarını sanal ortamın da bulması için uygulamayı düzelttim.
+Aynı klasördeki PowerShell’de şimdi şunu çalıştır:
+
+.\.venv\Scripts\python.exe app.py
+
+Uygulama açılırsa dosyalarını seçebilirsin. Almanca ses modeli alanında şu dosyayı seç:
+
+models\de_DE-thorsten-medium.onnx
+
