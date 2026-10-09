@@ -1,3 +1,18 @@
+Bilgisayarindaki python versionunu bulmak icin :
+Windows’ta Başlat menüsüne “PowerShell” yazıp aç. Şu komutu gir:
+
+```powershell
+py --version
+``` veya
+python --version
+veya Yüklü tüm Python sürümlerini görmek için:
+py -0p
+
+Python 3.13.0 ile devam edebiliriz. Önce [uygulama ZIP’ini](C:/Users/ayner/Documents/Codex/2026-10-01/ca/outputs/SesliSunum.zip) bir klasöre çıkar.
+Çıkardığın klasörü aç; app.py dosyasının bulunduğu yerde, Dosya Gezgini’nin adres çubuğuna powershell yazıp Enter’a bas.
+Açılan pencerede readme dosyasindaki komutları sırayla çalıştır.
+
+readme(html versiyonu degil ilk python versiyonu icin) dosyasindaki komutlari uygularken hata ile karsilasinca:
 Bu hata, uygulamanın pencere açmak için kullandığı Tcl/Tk dosyalarını bulamadığını gösteriyor.
 Önce uygulama klasöründeki PowerShell penceresinde şu komutu çalıştır:
 
