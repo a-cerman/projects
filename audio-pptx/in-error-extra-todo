@@ -1,3 +1,11 @@
+Hedef bilgisayarda python kurulumu icin şu adımları izle:
+1. Python’ın resmi Windows indirme sayfasını aç.
+2. Python 3.13.x sürümlerinden birini bul ve altında “Download Windows installer (64-bit)” bağlantısına tıkla.
+3. İndirilen .exe dosyasını aç.
+4. İlk ekranda “Add python.exe to PATH” kutusunu işaretle.
+5. “Install Now” seçeneğine tıkla. Kurulum bitince “Close” ile kapat.
+Ardından yeni bir PowerShell penceresi açıp kurulumu kontrol et.
+
 Bilgisayarindaki python versionunu bulmak icin :
 Windows’ta Başlat menüsüne “PowerShell” yazıp aç. Şu komutu gir:
 
