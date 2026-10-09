@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Narrated Presentations</title>
+<style>
+body{font:16px system-ui,sans-serif;background:#f3f6fa;color:#19314b;margin:0}main{max-width:900px;margin:40px auto;padding:32px;background:white;border-radius:16px}h1{margin:0 0 8px}p{line-height:1.6;color:#526276}label{display:block;margin-top:20px;font-weight:600}.row{display:flex;gap:8px;margin-top:7px}input{flex:1;min-width:0;padding:12px;border:1px solid #aab7c6;border-radius:7px;font:inherit}button{padding:12px 18px;border:0;border-radius:7px;background:#175cad;color:white;cursor:pointer;font:inherit}button:disabled{opacity:.5;cursor:wait}.actions{display:flex;gap:12px;margin:24px 0;flex-wrap:wrap}.secondary{background:#e7edf5;color:#19314b}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6fa;padding:18px;border-radius:8px;line-height:1.6}#error{color:#aa2430}article{border-top:1px solid #dce3eb;padding:12px 0}article p{white-space:pre-wrap}footer{margin-top:28px}#status{font-weight:600}@media(max-width:600px){main{margin:0;padding:20px}.row{flex-wrap:wrap}}
+</style>
+<main><h1>Narrated Presentations</h1><p>Generate German narration locally and add it to your PowerPoint slides.</p>
+<form id="form" onsubmit="return false">
+<label for="ppt">PowerPoint file</label><div class="row"><input id="ppt" placeholder="C:\Presentations\presentation.pptx"><button type="button" data-kind="ppt">Browse</button></div>
+<label for="doc">Word narration script</label><div class="row"><input id="doc" placeholder="A .docx file with FOLIE - 1. headings"><button type="button" data-kind="doc">Browse</button></div>
+<label for="model">German voice model</label><div class="row"><input id="model" placeholder="de_DE-thorsten-medium.onnx"><button type="button" data-kind="model">Browse</button></div>
+<label for="target">Output folder</label><div class="row"><input id="target" placeholder="Folder for the narrated presentation"><button type="button" data-kind="target">Browse</button></div>
+<div class="actions"><button id="preview" class="secondary">Preview script</button><button id="start">Create narrated PPTX</button></div></form>
+<p id="error" role="alert"></p><div id="status" aria-live="polite">Ready</div><div id="slides"></div><pre id="logs" hidden></pre>
+<footer><p>Runs locally on this computer. Select the original presentation without added narration. Closing the browser tab does not stop the background application.</p><button id="stop" class="secondary">Close application</button></footer></main>
+<script>
+const token='__TOKEN__';const $=id=>document.getElementById(id);let stopped=false;
+async function api(path,data={}){const r=await fetch('/api/'+path,{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':token},body:JSON.stringify(data)});const v=await r.json();if(!r.ok)throw Error(v.error);return v}
+function error(e){$('error').textContent=e.message}
+document.querySelectorAll('[data-kind]').forEach(b=>b.onclick=async()=>{b.disabled=true;$('error').textContent='';try{const v=await api('choose',{kind:b.dataset.kind});if(v.path)$(b.dataset.kind).value=v.path}catch(e){error(e)}finally{b.disabled=false}});
+$('preview').onclick=async()=>{try{$('error').textContent='';const v=await api('preview',{doc:$('doc').value});$('slides').replaceChildren();for(const [n,text] of Object.entries(v.slides)){const a=document.createElement('article'),h=document.createElement('h3'),p=document.createElement('p');h.textContent='FOLIE - '+n+'.';p.textContent=text;a.append(h,p);$('slides').append(a)}}catch(e){error(e)}};
+$('start').onclick=async()=>{try{$('error').textContent='';$('start').disabled=true;const data={};for(const k of ['ppt','doc','model','target'])data[k]=$(k).value;await api('start',data)}catch(e){error(e);$('start').disabled=false}};
+$('stop').onclick=async()=>{try{await api('stop');stopped=true;$('status').textContent='Application stopped. You can close this tab.';document.querySelectorAll('button').forEach(b=>b.disabled=true)}catch(e){error(e)}};
+async function poll(){if(stopped)return;try{const s=await api('status');$('start').disabled=s.busy;$('stop').disabled=s.busy;$('status').textContent=s.busy?'Generating narration…':s.logs.length?'Processing finished. Check the result below.':'Ready';$('logs').hidden=!s.logs.length;$('logs').textContent=s.logs.join('\n')}catch(e){$('status').textContent='Connection to the local application was lost.'}if(!stopped)setTimeout(poll,1000)}poll();
+</script></html>
