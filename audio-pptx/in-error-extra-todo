@@ -1,5 +1,6 @@
 Hedef bilgisayarda python kurulumu icin şu adımları izle:
-1. Python’ın resmi Windows indirme sayfasını aç.
+1. Python’ın resmi Windows indirme sayfasını aç.  
+https://www.python.org/downloads/windows/
 2. Python 3.13.x sürümlerinden birini bul ve altında “Download Windows installer (64-bit)” bağlantısına tıkla.
 3. İndirilen .exe dosyasını aç.
 4. İlk ekranda “Add python.exe to PATH” kutusunu işaretle.
